@@ -1,44 +1,32 @@
 package modelo;
 
-public class Financiamento {
+public abstract class Financiamento {
     private double valorImovel;
-    private int prazoFinanciamento;
-    private double taxaJurosAnual;
+    private int prazo;
+    private double taxaJuros;
 
-    public Financiamento(double valorImovel, int prazoFinanciamento, double taxaJurosAnual) {
+    public Financiamento(double valorImovel, int prazo, double taxaJuros) {
         this.valorImovel = valorImovel;
-        this.prazoFinanciamento = prazoFinanciamento;
-        this.taxaJurosAnual = taxaJurosAnual;
+        this.prazo = prazo;
+        this.taxaJuros = taxaJuros;
     }
-
-    public double calcularPagamentoMensal() {
-        double taxaJurosMensal = (taxaJurosAnual / 100) / 12; // dividindo por 100 para converter % para decimal
-        return (valorImovel / (prazoFinanciamento * 12)) * (1 + taxaJurosMensal);
-    }
-
-    public double calcularTotalPagamento() {
-        return calcularPagamentoMensal() * prazoFinanciamento * 12;
-    }
-
 
     public double getValorImovel() {
         return valorImovel;
     }
 
-    public int getPrazoFinanciamento() {
-        return prazoFinanciamento;
+    public int getPrazo() {
+        return prazo;
     }
 
-    public double getTaxaJurosAnual() {
-        return taxaJurosAnual;
+    public double getTaxaJuros() {
+        return taxaJuros;
     }
 
-    public void exibirResumoFinanciamento() {
-        System.out.println("Resumo do Financiamento:");
-        System.out.printf("Valor do imóvel: R$ %.2f%n", valorImovel);
-        System.out.printf("Prazo: %d anos%n", prazoFinanciamento);
-        System.out.printf("Taxa de juros anual: %.2f%%%n", taxaJurosAnual);
-        System.out.printf("Pagamento mensal: R$ %.2f%n", calcularPagamentoMensal());
-        System.out.printf("Pagamento total: R$ %.2f%n", calcularTotalPagamento());
+    public abstract double calcularPagamentoMensal() throws AumentoMaiorDoQueJurosException;
+
+    @Override
+    public String toString() {
+        return String.format("Valor do imóvel: R$ %.2f, Prazo: %d anos, Taxa de juros: %.2f%%", valorImovel, prazo, taxaJuros);
     }
 }
