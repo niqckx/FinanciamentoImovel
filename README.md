@@ -43,14 +43,14 @@ A interação com o usuário é feita via console, com validações para garanti
 - Mostra soma total dos valores dos imóveis e financiamentos.
 
 ## Exemplo de execução
-Digite o valor do imóvel (ex: 280000.00): 280.000,00
-Digite o prazo do financiamento em anos: 64
-Digite a taxa de juros anual (ex: 7.5): 1.5
+- Digite o valor do imóvel (ex: 280000.00): 280.000,00
+- Digite o prazo do financiamento em anos: 64
+- Digite a taxa de juros anual (ex: 7.5): 1.5
 
-Financiamento 1 – valor do imóvel: R$ 280000,00, valor do financiamento: R$ 280350,00.
-Financiamento 2 – valor do imóvel: R$ 300000,00, valor do financiamento: R$ 301875,00.
-Financiamento 3 – valor do imóvel: R$ 150000,00, valor do financiamento: R$ 150812,50.
-Financiamento 4 – valor do imóvel: R$ 250000,00, valor do financiamento: R$ 251458,33.
+- Financiamento 1 – valor do imóvel: R$ 280000,00, valor do financiamento: R$ 280350,00.
+- Financiamento 2 – valor do imóvel: R$ 300000,00, valor do financiamento: R$ 301875,00.
+- Financiamento 3 – valor do imóvel: R$ 150000,00, valor do financiamento: R$ 150812,50.
+- Financiamento 4 – valor do imóvel: R$ 250000,00, valor do financiamento: R$ 251458,33.
 
 Total de todos os imóveis: R$ 980000,00, total de todos os financiamentos: R$ 984495,83.
 
