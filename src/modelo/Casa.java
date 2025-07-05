@@ -1,6 +1,8 @@
 package modelo;
 
 public class Casa extends Financiamento {
+    private static final long serialVersionUID = 1L;
+
     private boolean temQuintal;
     private double areaConstruida;
     private double areaTerreno;
@@ -24,14 +26,26 @@ public class Casa extends Financiamento {
         return areaTerreno;
     }
 
+    public void setTemQuintal(boolean temQuintal) {
+        this.temQuintal = temQuintal;
+    }
+
+    public void setAreaConstruida(double areaConstruida) {
+        this.areaConstruida = areaConstruida;
+    }
+
+    public void setAreaTerreno(double areaTerreno) {
+        this.areaTerreno = areaTerreno;
+    }
+
     @Override
-    public double calcularPagamentoMensal() throws AumentoMaiorDoQueJurosException {
+    public double calcularPagamentoMensal() throws modelo.AumentoMaiorDoQueJurosException {
         double jurosMensal = (getTaxaJuros() / 100) / 12 * getValorImovel();
         double valorBaseMensal = getValorImovel() / (getPrazo() * 12);
         double acrescimo = 80;
 
         if (acrescimo > jurosMensal / 2) {
-            throw new AumentoMaiorDoQueJurosException(
+            throw new modelo.AumentoMaiorDoQueJurosException(
                     String.format("Acréscimo de R$ %.2f é maior do que a metade dos juros mensais (R$ %.2f).", acrescimo, jurosMensal / 2)
             );
         }
@@ -41,7 +55,7 @@ public class Casa extends Financiamento {
 
     @Override
     public String toString() {
-        return String.format("Casa - Quintal: %s, Área construída: %.2f m², Área do terreno: %.2f m²",
-                temQuintal ? "Sim" : "Não", areaConstruida, areaTerreno);
+        return String.format("Casa - Quintal: %s, Área construída: %.2f m², Área do terreno: %.2f m², %s",
+                temQuintal ? "Sim" : "Não", areaConstruida, areaTerreno, super.toString());
     }
 }

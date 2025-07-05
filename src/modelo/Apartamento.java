@@ -1,6 +1,8 @@
 package modelo;
 
 public class Apartamento extends Financiamento {
+    private static final long serialVersionUID = 1L;
+
     private int andar;
     private int vagasGaragem;
 
@@ -14,12 +16,12 @@ public class Apartamento extends Financiamento {
         return andar;
     }
 
-    public void setAndar(int andar) {
-        this.andar = andar;
-    }
-
     public int getVagasGaragem() {
         return vagasGaragem;
+    }
+
+    public void setAndar(int andar) {
+        this.andar = andar;
     }
 
     public void setVagasGaragem(int vagasGaragem) {
@@ -27,11 +29,10 @@ public class Apartamento extends Financiamento {
     }
 
     @Override
-    public double calcularPagamentoMensal() throws AumentoMaiorDoQueJurosException {
+    public double calcularPagamentoMensal() throws modelo.AumentoMaiorDoQueJurosException {
         double jurosMensal = (getTaxaJuros() / 100) / 12;
         double valorBaseMensal = getValorImovel() / (getPrazo() * 12);
-        double pagamentoMensal = valorBaseMensal + (valorBaseMensal * jurosMensal);
-        return pagamentoMensal;
+        return valorBaseMensal + (valorBaseMensal * jurosMensal);
     }
 
     @Override

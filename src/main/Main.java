@@ -3,14 +3,20 @@ package main;
 import modelo.Apartamento;
 import modelo.AumentoMaiorDoQueJurosException;
 import modelo.Casa;
+import modelo.Financiamento;
 import modelo.Terreno;
 
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
 
+    private static final String ARQUIVO_SERIAL = "financiamentos.ser";
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        ArrayList<Financiamento> financiamentos = carregarFinanciamentos();
 
         while (true) {
             System.out.println("\nEscolha o tipo de financiamento:");
@@ -29,7 +35,15 @@ public class Main {
             }
 
             if (opcao == 0) {
-                System.out.println("Sair");
+                System.out.println("Saindo e salvando financiamentos...");
+                salvarFinanciamentos(financiamentos);
+                System.out.println("Financiamentos salvos com sucesso em " + ARQUIVO_SERIAL);
+
+                // Mostrar financiamentos carregados para comprovar
+                System.out.println("\nFinanciamentos carregados do arquivo:");
+                for (Financiamento f : financiamentos) {
+                    System.out.println(f);
+                }
                 break;
             }
 
@@ -38,36 +52,46 @@ public class Main {
                 int prazo = lerInt(sc, "Digite o prazo do financiamento em anos: ");
                 double taxaJuros = lerDouble(sc, "Digite a taxa de juros anual (ex: 7.5): ");
 
+                Financiamento f = null;
+
                 switch (opcao) {
                     case 1:
                         boolean temQuintal = lerBoolean(sc, "A casa tem quintal? (s/n): ");
                         double areaConstruida = lerDouble(sc, "Área construída (m²): ");
                         double areaTerreno = lerDouble(sc, "Área do terreno (m²): ");
-
-                        Casa casa = new Casa(valorImovel, prazo, taxaJuros, temQuintal, areaConstruida, areaTerreno);
-                        exibirResumoFinanciamento("Casa", casa, prazo);
+                        f = new Casa(valorImovel, prazo, taxaJuros, temQuintal, areaConstruida, areaTerreno);
                         break;
 
                     case 2:
                         int andar = lerInt(sc, "Número do andar: ");
                         int vagasGaragem = lerInt(sc, "Número de vagas na garagem: ");
-
-                        Apartamento apto = new Apartamento(valorImovel, prazo, taxaJuros, andar, vagasGaragem);
-                        exibirResumoFinanciamento("Apartamento", apto, prazo);
+                        f = new Apartamento(valorImovel, prazo, taxaJuros, andar, vagasGaragem);
                         break;
 
                     case 3:
                         double metragem = lerDouble(sc, "Metragem do terreno (m²): ");
-                        System.out.print("Tipo da zona (residencial/comercial): ");
-                        String tipoZona = sc.nextLine();
+                        String tipoZona;
+                        do {
+                            System.out.print("Tipo da zona (residencial/comercial): ");
+                            tipoZona = sc.nextLine().trim().toLowerCase();
+                            if (!tipoZona.equals("residencial") && !tipoZona.equals("comercial")) {
+                                System.out.println("Entrada inválida. Digite 'residencial' ou 'comercial'.");
+                            }
+                        } while (!tipoZona.equals("residencial") && !tipoZona.equals("comercial"));
 
-                        Terreno terreno = new Terreno(valorImovel, prazo, taxaJuros, metragem, tipoZona);
-                        exibirResumoFinanciamento("Terreno", terreno, prazo);
+                        f = new Terreno(valorImovel, prazo, taxaJuros, metragem, tipoZona);
                         break;
 
                     default:
                         System.out.println("Opção inválida.");
+                        continue;
                 }
+
+                // Adiciona financiamento na lista
+                financiamentos.add(f);
+
+                // Exibe resumo
+                exibirResumoFinanciamento(opcao == 1 ? "Casa" : opcao == 2 ? "Apartamento" : "Terreno", f, prazo);
 
             } catch (NumberFormatException e) {
                 System.out.println("Entrada inválida. Use números com ponto (ex: 7.5).");
@@ -109,7 +133,7 @@ public class Main {
         }
     }
 
-    private static void exibirResumoFinanciamento(String tipo, modelo.Financiamento f, int prazoAnos) {
+    private static void exibirResumoFinanciamento(String tipo, Financiamento f, int prazoAnos) {
         System.out.println("\n" + tipo + " cadastrado com sucesso!");
         System.out.println(f);
         try {
@@ -121,5 +145,26 @@ public class Main {
         } catch (AumentoMaiorDoQueJurosException e) {
             System.out.println("Erro no cálculo do pagamento mensal: " + e.getMessage());
         }
+    }
+
+    private static void salvarFinanciamentos(ArrayList<Financiamento> lista) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARQUIVO_SERIAL))) {
+            oos.writeObject(lista);
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar financiamentos: " + e.getMessage());
+        }
+    }
+
+    private static ArrayList<Financiamento> carregarFinanciamentos() {
+        ArrayList<Financiamento> lista = new ArrayList<>();
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(ARQUIVO_SERIAL))) {
+            lista = (ArrayList<Financiamento>) ois.readObject();
+            System.out.println("Financiamentos carregados do arquivo.");
+        } catch (FileNotFoundException e) {
+            System.out.println("Arquivo de financiamentos não encontrado. Iniciando lista vazia.");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Erro ao carregar financiamentos: " + e.getMessage());
+        }
+        return lista;
     }
 }
