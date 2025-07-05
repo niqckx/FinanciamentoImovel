@@ -1,5 +1,7 @@
 package modelo;
 
+import util.AumentoMaiorDoQueJurosException;
+
 import java.io.Serializable;
 
 public abstract class Financiamento implements Serializable {
@@ -39,7 +41,7 @@ public abstract class Financiamento implements Serializable {
         this.taxaJuros = taxaJuros;
     }
 
-    public abstract double calcularPagamentoMensal() throws modelo.AumentoMaiorDoQueJurosException;
+    public abstract double calcularPagamentoMensal() throws AumentoMaiorDoQueJurosException;
 
     @Override
     public String toString() {

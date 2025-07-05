@@ -1,7 +1,7 @@
 package main;
 
 import modelo.Apartamento;
-import modelo.AumentoMaiorDoQueJurosException;
+import util.AumentoMaiorDoQueJurosException;
 import modelo.Casa;
 import modelo.Financiamento;
 import modelo.Terreno;

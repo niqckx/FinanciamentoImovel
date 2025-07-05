@@ -1,5 +1,6 @@
 package modelo;
 
+import util.AumentoMaiorDoQueJurosException;
 public class Apartamento extends Financiamento {
     private static final long serialVersionUID = 1L;
 
@@ -29,7 +30,7 @@ public class Apartamento extends Financiamento {
     }
 
     @Override
-    public double calcularPagamentoMensal() throws modelo.AumentoMaiorDoQueJurosException {
+    public double calcularPagamentoMensal() throws AumentoMaiorDoQueJurosException {
         double jurosMensal = (getTaxaJuros() / 100) / 12;
         double valorBaseMensal = getValorImovel() / (getPrazo() * 12);
         return valorBaseMensal + (valorBaseMensal * jurosMensal);

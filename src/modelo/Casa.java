@@ -1,5 +1,8 @@
 package modelo;
 
+import util.AumentoMaiorDoQueJurosException;
+
+
 public class Casa extends Financiamento {
     private static final long serialVersionUID = 1L;
 
@@ -39,13 +42,13 @@ public class Casa extends Financiamento {
     }
 
     @Override
-    public double calcularPagamentoMensal() throws modelo.AumentoMaiorDoQueJurosException {
+    public double calcularPagamentoMensal() throws util.AumentoMaiorDoQueJurosException {
         double jurosMensal = (getTaxaJuros() / 100) / 12 * getValorImovel();
         double valorBaseMensal = getValorImovel() / (getPrazo() * 12);
         double acrescimo = 80;
 
         if (acrescimo > jurosMensal / 2) {
-            throw new modelo.AumentoMaiorDoQueJurosException(
+            throw new util.AumentoMaiorDoQueJurosException(
                     String.format("Acréscimo de R$ %.2f é maior do que a metade dos juros mensais (R$ %.2f).", acrescimo, jurosMensal / 2)
             );
         }

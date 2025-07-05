@@ -1,7 +1,7 @@
 package util;
 
 import modelo.*;
-import modelo.AumentoMaiorDoQueJurosException;
+
 
 import java.io.*;
 import java.util.ArrayList;
