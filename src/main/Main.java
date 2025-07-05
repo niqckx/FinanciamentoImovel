@@ -1,10 +1,10 @@
 package main;
 
 import modelo.Apartamento;
-import util.AumentoMaiorDoQueJurosException;
 import modelo.Casa;
 import modelo.Financiamento;
 import modelo.Terreno;
+import util.AumentoMaiorDoQueJurosException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -15,6 +15,14 @@ public class Main {
     private static final String ARQUIVO_SERIAL = "financiamentos.ser";
 
     public static void main(String[] args) {
+        //limpeza do arquivo no início... assim, não puxa todos os históricos
+        try {
+            new FileOutputStream(ARQUIVO_SERIAL).close();
+            System.out.println("Arquivo de financiamentos limpo no início da execução.");
+        } catch (IOException e) {
+            System.out.println("Erro ao limpar o arquivo: " + e.getMessage());
+        }
+
         Scanner sc = new Scanner(System.in);
         ArrayList<Financiamento> financiamentos = carregarFinanciamentos();
 
@@ -39,8 +47,8 @@ public class Main {
                 salvarFinanciamentos(financiamentos);
                 System.out.println("Financiamentos salvos com sucesso em " + ARQUIVO_SERIAL);
 
-                // Mostrar financiamentos carregados para comprovar
-                System.out.println("\nFinanciamentos carregados do arquivo:");
+
+                System.out.println("\nFinanciamentos cadastrados nesta sessão:");
                 for (Financiamento f : financiamentos) {
                     System.out.println(f);
                 }
@@ -87,11 +95,15 @@ public class Main {
                         continue;
                 }
 
-                // Adiciona financiamento na lista
+
                 financiamentos.add(f);
 
-                // Exibe resumo
-                exibirResumoFinanciamento(opcao == 1 ? "Casa" : opcao == 2 ? "Apartamento" : "Terreno", f, prazo);
+
+                exibirResumoFinanciamento(
+                        opcao == 1 ? "Casa" : opcao == 2 ? "Apartamento" : "Terreno",
+                        f,
+                        prazo
+                );
 
             } catch (NumberFormatException e) {
                 System.out.println("Entrada inválida. Use números com ponto (ex: 7.5).");

@@ -53,7 +53,7 @@ public class ArquivoUtil {
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] partes = linha.split(";");
-                if (partes.length < 5) continue; // validação simples
+                if (partes.length < 5) continue;
 
                 double valorImovel = Double.parseDouble(partes[0]);
                 // Ignorar valor do financiamento calculado salvo (partes[1])
